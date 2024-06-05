@@ -47,20 +47,24 @@ public class Game {
      */
     public int round(String playerName1, String playerName2) {
 
-        String[] playerNames = {playerName1, playerName2};
+        Player player1 = findByName(playerName1);
+        Player player2 = findByName(playerName2);
 
-        for (String playerName : playerNames) {
-            Player ifRegistered = findByName(playerName);
-            if (ifRegistered == null) {
-                throw new NotRegisteredException(
-                        "Player " + playerName + " not registered"
-                );
-            }
+        if (player1 == null) {
+            throw new NotRegisteredException(
+                    "Player " + playerName1 + " not registered"
+            );
         }
 
-        if (findByName(playerName1).getStrength() < findByName(playerName2).getStrength()) {
+        if (player2 == null) {
+            throw new NotRegisteredException(
+                    "Player " + playerName2 + " not registered"
+            );
+        }
+
+        if (player1.getStrength() < player2.getStrength()) {
             return 2;
-        } else if (findByName(playerName1).getStrength() > findByName(playerName2).getStrength()) {
+        } else if (player1.getStrength() > player2.getStrength()) {
             return 1;
         } else {
             return 0;
