@@ -3,16 +3,16 @@ package ru.netology.javaqa.javaqamvn.manager;
 import ru.netology.javaqa.javaqamvn.domain.Player;
 import ru.netology.javaqa.javaqamvn.exceptions.NotRegisteredException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
 
     public Game() {
     }
 
-    // список игроков
-    List<Player> players = new ArrayList<>();
+    // мапа игроков
+    private Map<String, Player> players = new HashMap<>();
 
     /**
      * Метод регистрации игрока
@@ -20,23 +20,9 @@ public class Game {
      * @param player Объект класса Player
      */
     public void register(Player player) {
-        players.add(player);
+        players.put(player.getName(), player);
     }
 
-    /**
-     * Метод поиска игрока по имени
-     *
-     * @param name имя игрока
-     * @return Объект класса Player
-     */
-    public Player findByName(String name) {
-        for (Player player : players) {
-            if (player.getName().equals(name)) {
-                return player;
-            }
-        }
-        return null;
-    }
 
     /**
      * Метод рассчёта исхода раунда
@@ -50,17 +36,16 @@ public class Game {
         String[] playerNames = {playerName1, playerName2};
 
         for (String playerName : playerNames) {
-            Player ifRegistered = findByName(playerName);
-            if (ifRegistered == null) {
+            if (players.get(playerName) == null) {
                 throw new NotRegisteredException(
                         "Player " + playerName + " not registered"
                 );
             }
         }
 
-        if (findByName(playerName1).getStrength() < findByName(playerName2).getStrength()) {
+        if (players.get(playerName1).getStrength() < players.get(playerName2).getStrength()) {
             return 2;
-        } else if (findByName(playerName1).getStrength() > findByName(playerName2).getStrength()) {
+        } else if (players.get(playerName1).getStrength() > players.get(playerName2).getStrength()) {
             return 1;
         } else {
             return 0;
